@@ -8,7 +8,7 @@ The OTEL_RESOURCES_ATTRIBUTES environment variable uses Kubernetes environment v
 {{- $resourceAttributesEnv := dict }}
 {{- $allEnvs := list }}
 {{- if .useDefault.env  }}
-{{-   $defaultEnvs := include "otel-demo.envOverriden" (dict "env" .defaultValues.env "envOverrides" .defaultValues.envOverrides) | mustFromJson }}
+{{-   $defaultEnvs := include "otel-demo.envOverriden" (dict "env" .defaultValues.env "envOverrides" .defaultValues.envOverrides) | mustToJson }}
 {{-   range $defaultEnvs }}
 {{-     if eq .name "OTEL_RESOURCE_ATTRIBUTES" }}
 {{-       $resourceAttributesEnv = . }}
@@ -18,7 +18,7 @@ The OTEL_RESOURCES_ATTRIBUTES environment variable uses Kubernetes environment v
 {{-   end }}
 {{- end }}
 {{- if or .env .envOverrides }}
-{{-   $allEnvs = concat $allEnvs ((include "otel-demo.envOverriden" .) | mustFromJson) }}
+{{-   $allEnvs = concat $allEnvs ((include "otel-demo.envOverriden" .) | mustToJson) }}
 {{- end }}
 {{- if $resourceAttributesEnv }}
 {{-   $allEnvs = append $allEnvs $resourceAttributesEnv }}
